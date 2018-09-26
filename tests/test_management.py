@@ -1,5 +1,5 @@
 
-from donkeycar.management import base
+import base
 from tempfile import tempdir
 
 def get_test_tub_path():
