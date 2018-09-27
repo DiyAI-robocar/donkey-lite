@@ -10,9 +10,7 @@ from source.parts.datastore import Tub
 from source.management.tub import TubManager
 
 
-# PACKAGE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-# TEMPLATES_PATH = os.path.join(PACKAGE_PATH, 'source/source/templates')
-TEMPLATES_PATH = "./source/templates/"
+TEMPLATES_PATH = "./templates/"
 
 
 def make_dir(path):
