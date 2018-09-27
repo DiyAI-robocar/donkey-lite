@@ -20,12 +20,12 @@ def cardir(tmpdir):
 
 
 def test_createcar(cardir):
-    cmd = ['donkey', 'createcar', '--path', cardir]
+    cmd = ['python3','-B', 'base.py', 'createcar', '--path', cardir]
     out, err, proc_id = util.proc.run_shell_command(cmd)
     assert is_error(err) is False
 
 def test_drivesim(cardir):
-    cmd = ['donkey', 'createcar', '--path', cardir ,'--template', 'square']
+    cmd = ['python3','-B', 'base.py', 'createcar', '--path', cardir ,'--template', 'square']
     out, err, proc_id = util.proc.run_shell_command(cmd, timeout=10)
     cmd = ['python', 'manage.py', 'drive']
     out, err, proc_id = util.proc.run_shell_command(cmd, cwd = cardir)
@@ -37,7 +37,7 @@ def test_drivesim(cardir):
         raise ValueError (err)
 
 def test_bad_command_fails():
-    cmd = ['donkey', 'not a comand']
+    cmd = ['python3','-B', 'base.py', 'not a comand']
     out, err, proc_id = util.proc.run_shell_command(cmd)
     print(err)
     print(out)
