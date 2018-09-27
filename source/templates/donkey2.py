@@ -21,16 +21,16 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_DIR)))
 
 
-import donkeycar as dk
+import source as dk
 
 #import parts
-from donkeycar.parts.camera import PiCamera
-from donkeycar.parts.transform import Lambda
-from donkeycar.parts.keras import KerasCategorical
-from donkeycar.parts.actuator import PCA9685, PWMSteering, PWMThrottle
-from donkeycar.parts.datastore import TubGroup, TubWriter
-from donkeycar.parts.controller import LocalWebController, JoystickController
-from donkeycar.parts.clock import Timestamp
+from source.parts.camera import PiCamera
+from source.parts.transform import Lambda
+from source.parts.keras import KerasCategorical
+from source.parts.actuator import PCA9685, PWMSteering, PWMThrottle
+from source.parts.datastore import TubGroup, TubWriter
+from source.parts.controller import LocalWebController, JoystickController
+from source.parts.clock import Timestamp
 
 
 def drive(cfg, model_path=None, use_joystick=False, use_chaos=False):

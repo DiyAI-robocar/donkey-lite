@@ -1,4 +1,4 @@
-from donkeycar.parts.transform import Lambda
+from source.parts.transform import Lambda
 
 
 def f(a):

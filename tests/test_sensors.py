@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 from .setup import on_pi
-from donkeycar.parts.camera import BaseCamera
+from source.parts.camera import BaseCamera
 
 
 def test_base_camera():
@@ -11,7 +11,7 @@ def test_base_camera():
 
 @pytest.mark.skipif(on_pi() == False, reason='only works on RPi')
 def test_picamera():
-    from donkeycar.parts.camera import PiCamera
+    from source.parts.camera import PiCamera
     resolution = (120,160)
     cam = PiCamera(resolution=resolution)
     frame = cam.run()

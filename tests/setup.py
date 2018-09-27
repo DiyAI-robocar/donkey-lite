@@ -1,7 +1,7 @@
 import platform
 import pytest
-from donkeycar.parts.datastore import Tub
-from donkeycar.parts.simulation import SquareBoxCamera, MovingSquareTelemetry
+from source.parts.datastore import Tub
+from source.parts.simulation import SquareBoxCamera, MovingSquareTelemetry
 
 
 def on_pi():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Parts to try donkeycar without a physical car.
+Parts to try source without a physical car.
 """
 
 import random

@@ -1,6 +1,6 @@
 from .setup import on_pi
 
-from donkeycar.parts.actuator import PCA9685, PWMSteering, PWMThrottle
+from source.parts.actuator import PCA9685, PWMSteering, PWMThrottle
 import pytest
 
 

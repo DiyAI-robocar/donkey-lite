@@ -3,7 +3,7 @@ import unittest
 import tempfile
 import os
 
-from donkeycar.parts.datastore import Tub, TubWriter
+from source.parts.datastore import Tub, TubWriter
 
 
 class TestTubWriter(unittest.TestCase):

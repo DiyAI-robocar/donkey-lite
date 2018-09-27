@@ -16,14 +16,14 @@ Usage:
 
 import os
 from docopt import docopt
-import donkeycar as dk
+import source as dk
 
-from donkeycar.parts.datastore import TubGroup, TubWriter
-from donkeycar.parts.transform import Lambda
-from donkeycar.parts.simulation import SquareBoxCamera
+from source.parts.datastore import TubGroup, TubWriter
+from source.parts.transform import Lambda
+from source.parts.simulation import SquareBoxCamera
 from controller import LocalWebController
-from donkeycar.parts.keras import KerasCategorical
-from donkeycar.parts.clock import Timestamp
+from source.parts.keras import KerasCategorical
+from source.parts.clock import Timestamp
 
 log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sq.log')
 dk.log.setup(log_path)

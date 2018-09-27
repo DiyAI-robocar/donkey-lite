@@ -1,6 +1,6 @@
 import pytest
-import donkeycar as dk
-from donkeycar.parts.transform import Lambda
+import source as dk
+from source.parts.transform import Lambda
 
 @pytest.fixture()
 def vehicle():

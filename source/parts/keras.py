@@ -12,7 +12,7 @@ from tensorflow.python.keras.layers import Convolution2D
 from tensorflow.python.keras.layers import Dropout, Flatten, Dense, Cropping2D, Lambda
 from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 
-from donkeycar import util
+from source import util
 
 
 class KerasPilot:

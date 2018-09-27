@@ -5,14 +5,14 @@ import socket
 import shutil
 import argparse
 
-import donkeycar as dk
-from donkeycar.parts.datastore import Tub
-from donkeycar.management.tub import TubManager
+import source as dk
+from source.parts.datastore import Tub
+from source.management.tub import TubManager
 
 
 # PACKAGE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-# TEMPLATES_PATH = os.path.join(PACKAGE_PATH, 'donkeycar/donkeycar/templates')
-TEMPLATES_PATH = "./donkeycar/templates/"
+# TEMPLATES_PATH = os.path.join(PACKAGE_PATH, 'source/source/templates')
+TEMPLATES_PATH = "./source/templates/"
 
 
 def make_dir(path):
@@ -148,7 +148,7 @@ class CalibrateCar(BaseCommand):
         return parsed_args
 
     def run(self, args):
-        from donkeycar.parts.actuator import PCA9685
+        from source.parts.actuator import PCA9685
 
         args = self.parse_args(args)
         channel = int(args.channel)
@@ -246,8 +246,8 @@ class Sim(BaseCommand):
         Start a websocket SocketIO server to talk to a donkey simulator
         """
         import socketio
-        from donkeycar.parts.simulation import SteeringServer
-        from donkeycar.parts.keras import KerasCategorical, KerasLinear
+        from source.parts.simulation import SteeringServer
+        from source.parts.keras import KerasCategorical, KerasLinear
 
         args, parser = self.parse_args(args)
 
@@ -330,7 +330,7 @@ class ShowHistogram(BaseCommand):
         Produce a histogram of record type frequency in the given tub
         """
         from matplotlib import pyplot as plt
-        from donkeycar.parts.datastore import TubGroup
+        from source.parts.datastore import TubGroup
 
         tg = TubGroup(tub_paths)
         if record_name is not None:
@@ -371,8 +371,8 @@ class ShowPredictionPlots(BaseCommand):
         Plot model predictions for angle and throttle against data from tubs.
 
         """
-        from donkeycar.parts.datastore import TubGroup
-        from donkeycar.parts.keras import KerasCategorical
+        from source.parts.datastore import TubGroup
+        from source.parts.keras import KerasCategorical
 
         tg = TubGroup(tub_paths)
 
