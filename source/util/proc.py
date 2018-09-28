@@ -6,10 +6,17 @@ import os
 import sys
 
 
-def run_shell_command(cmd, cwd=None, timeout=15):
+def run_shell_command(cmd, cwd=None, timeout=15, print_out=False):
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
     out = []
     err = []
+
+    if(print_out):
+        while True:
+          line = proc.stdout.readline().decode('utf8')
+          if not line: break
+          print(line.replace('\n', ''))
+          out.append(line)
 
     try:
         proc.wait(timeout=timeout)
@@ -21,6 +28,7 @@ def run_shell_command(cmd, cwd=None, timeout=15):
 
     for line in proc.stderr.readlines():
         err.append(line)
+    
     return out, err, proc.pid
 
 """

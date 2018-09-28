@@ -6,6 +6,7 @@ import shutil
 import argparse
 
 import source as dk
+from source import util
 from source.parts.datastore import Tub
 from source.management.tub import TubManager
 
@@ -420,6 +421,17 @@ class ShowPredictionPlots(BaseCommand):
 
         plt.show()
 
+
+class RunTests(BaseCommand):
+
+    def run(self, args):
+        """
+        run all tests
+        """
+        cmd = ['python3', '-B', '-m', 'pytest']
+        out, err, proc_id = util.proc.run_shell_command(cmd, print_out=True)
+
+
 def execute_from_command_line():
     """
     This is the fuction linked to the "donkey" terminal command.
@@ -434,6 +446,7 @@ def execute_from_command_line():
             'tubcheck': TubCheck,
             'makemovie': MakeMovie,
             'sim': Sim,
+            'runtests': RunTests,
                 }
 
     args = sys.argv[:]

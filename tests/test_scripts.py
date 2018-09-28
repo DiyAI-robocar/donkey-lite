@@ -12,12 +12,10 @@ def is_error(err):
             return True
     return False
 
-
 @pytest.fixture
 def cardir(tmpdir):
     path = str(tmpdir.mkdir("mycar"))
     return path
-
 
 def test_createcar(cardir):
     cmd = ['python3','-B', 'donkeylite.py', 'createcar', '--path', cardir]
@@ -27,7 +25,7 @@ def test_createcar(cardir):
 def test_drivesim(cardir):
     cmd = ['python3','-B', 'donkeylite.py', 'createcar', '--path', cardir ,'--template', 'square']
     out, err, proc_id = util.proc.run_shell_command(cmd, timeout=10)
-    cmd = ['python', 'manage.py', 'drive']
+    cmd = ['python3', '-B', 'manage.py', 'drive']
     out, err, proc_id = util.proc.run_shell_command(cmd, cwd = cardir)
     print(err)
 
