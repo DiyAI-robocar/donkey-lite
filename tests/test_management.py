@@ -1,5 +1,5 @@
 
-import donkey as dk
+import donkeylite as dk
 from tempfile import tempdir
 
 def get_test_tub_path():
