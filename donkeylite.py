@@ -5,6 +5,8 @@ import socket
 import shutil
 import argparse
 
+import pytest
+
 import source as dk
 from source import util
 from source.parts.datastore import Tub
@@ -424,12 +426,21 @@ class ShowPredictionPlots(BaseCommand):
 
 class RunTests(BaseCommand):
 
+    def parse_args(self, args):
+        """
+        Parse tubplot arguments
+        """
+        parser = argparse.ArgumentParser(prog='runtests', usage='%(prog)s [options]')
+        parser.add_argument('--location', help='path to tests or path to file')
+        parsed_args = parser.parse_args(args)
+        return parsed_args
+
     def run(self, args):
         """
         run all tests
         """
-        cmd = ['python3', '-B', '-m', 'pytest']
-        out, err, proc_id = util.proc.run_shell_command(cmd, print_out=True)
+        args = self.parse_args(args)
+        pytest.main(['-x', args.location])
 
 
 def execute_from_command_line():
