@@ -1,4 +1,3 @@
-
 import sys
 import os
 import socket
@@ -53,8 +52,7 @@ class CreateCar(BaseCommand):
 
     def parse_args(self, args):
         parser = argparse.ArgumentParser(prog='createcar', usage='%(prog)s [options]')
-        parser.add_argument('path')
-        #parser.add_argument('--path', default=None, help='path where to create car folder')
+        parser.add_argument('--path', default=None, help='path where to create car folder')
         parser.add_argument('--template', default=None, help='name of car template to use')
         parser.add_argument('--overwrite', action='store_true', help='should replace existing files')
 
@@ -65,17 +63,12 @@ class CreateCar(BaseCommand):
         args = self.parse_args(args)
         self.create_car(path=args.path, template=args.template, overwrite=args.overwrite)
 
-    def create_car(self, path, template='donkey2', overwrite=False):
+    def create_car(self, path='~/mycar', template='donkey2', overwrite=False):
         """
         This script sets up the folder struction for donkey to work.
         It must run without donkey installed so that people installing with
         docker can build the folder structure for docker to mount to.
         """
-
-        #these are neeeded incase None is passed as path
-        path = path or '~/mycar'
-        template = template or 'donkey2'
-
 
         print("Creating car folder: {}".format(path))
         path = make_dir(path)
@@ -107,20 +100,8 @@ class CreateCar(BaseCommand):
         print("Donkey setup complete.")
 
 
-
-class UploadData(BaseCommand):
-
-    def parse_args(self, args):
-        parser = argparse.ArgumentParser(prog='uploaddata', usage='%(prog)s [options]')
-        parser.add_argument('--url', help='path where to create car folder')
-        parser.add_argument('--template', help='name of car template to use')
-
-        parsed_args = parser.parse_args(args)
-        return parsed_args
-
-
-
 class FindCar(BaseCommand):
+
     def parse_args(self, args):
         pass
 
@@ -137,7 +118,6 @@ class FindCar(BaseCommand):
         cmd = "sudo nmap -sP " + ip + "/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'"
         print("Your car's ip address is:" )
         os.system(cmd)
-
 
 
 class CalibrateCar(BaseCommand):
@@ -225,14 +205,11 @@ class MakeMovie(BaseCommand):
         return image # returns a 8-bit RGB array
 
 
-
-
-
 class Sim(BaseCommand):
+
     """
     Start a websocket SocketIO server to talk to a donkey simulator
     """
-
     def parse_args(self, args):
         parser = argparse.ArgumentParser(prog='sim')
         parser.add_argument('--model', help='the model to use for predictions')
@@ -293,8 +270,8 @@ class Sim(BaseCommand):
         ss.go(('0.0.0.0', 9090))
 
 
-
 class TubCheck(BaseCommand):
+
     def parse_args(self, args):
         parser = argparse.ArgumentParser(prog='tubcheck', usage='%(prog)s [options]')
         parser.add_argument('tubs', nargs='+', help='paths to tubs')
@@ -473,4 +450,3 @@ def execute_from_command_line():
 
 if __name__ == "__main__":
     execute_from_command_line()
-
