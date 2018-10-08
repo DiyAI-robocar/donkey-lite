@@ -1,7 +1,3 @@
-__version__ = '2.5.1'
-
-print('using donkey v{} ...'.format(__version__))
-
 import sys
 
 if sys.version_info.major < 3:
