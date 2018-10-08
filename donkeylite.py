@@ -7,7 +7,6 @@ import argparse
 import pytest
 
 import source as dk
-from source.management.tub import TubManager
 
 
 TEMPLATES_PATH = "./templates/"
@@ -165,7 +164,6 @@ def execute_from_command_line():
         'createcar': CreateCar,
         'findcar': FindCar,
         'calibrate': CalibrateCar,
-        'tubclean': TubManager,
         'runtests': RunTests,
     }
 
