@@ -52,18 +52,16 @@ class CreateCar(BaseCommand):
     def parse_args(args):
         parser = argparse.ArgumentParser(prog='createcar', usage='%(prog)s [options]')
         parser.add_argument('--path', default=None, help='path where to create car folder')
-        parser.add_argument('--template', default=None, help='name of car template to use')
-        parser.add_argument('--overwrite', action='store_true', help='should replace existing files')
 
         parsed_args = parser.parse_args(args)
         return parsed_args
 
     def run(self, args):
         args = self.parse_args(args)
-        self.create_car(path=args.path, template=args.template, overwrite=args.overwrite)
+        self.create_car(path=args.path)
 
     @staticmethod
-    def create_car(path='~/mycar', template='donkey2', overwrite=False):
+    def create_car(path='~/mycar'):
         """
         This script sets up the folder struction for donkey to work.
         It must run without donkey installed so that people installing with
@@ -80,18 +78,18 @@ class CreateCar(BaseCommand):
             make_dir(fp)
 
         #add car application and config files if they don't exist
-        app_template_path = os.path.join(TEMPLATES_PATH, template+'.py')
+        app_template_path = os.path.join(TEMPLATES_PATH, 'donkey2.py')
         config_template_path = os.path.join(TEMPLATES_PATH, 'config_defaults.py')
         car_app_path = os.path.join(path, 'manage.py')
         car_config_path = os.path.join(path, 'config.py')
 
-        if os.path.exists(car_app_path) and not overwrite:
+        if os.path.exists(car_app_path):
             print('Car app already exists. Delete it and rerun createcar to replace.')
         else:
-            print("Copying car application template: {}".format(template))
+            print("Copying car application template: {}".format("donkey2"))
             shutil.copyfile(app_template_path, car_app_path)
 
-        if os.path.exists(car_config_path) and not overwrite:
+        if os.path.exists(car_config_path):
             print('Car config already exists. Delete it and rerun createcar to replace.')
         else:
             print("Copying car config defaults. Adjust these before starting your car.")
