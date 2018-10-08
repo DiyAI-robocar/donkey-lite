@@ -1,7 +1,4 @@
-
-import random
 import io
-import os
 
 from PIL import Image
 import numpy as np
@@ -11,6 +8,7 @@ import numpy as np
 """
 IMAGES
 """
+
 
 def scale(im, size=128):
     """
@@ -69,20 +67,3 @@ def binary_to_img(binary):
 
 def norm_img(img):
     return (img - img.mean() / np.std(img))/255.0
-
-
-def create_video(img_dir_path, output_video_path):
-    import envoy
-    # Setup path to the images with telemetry.
-    full_path = os.path.join(img_dir_path, 'frame_*.png')
-
-    # Run ffmpeg.
-    command = ("""ffmpeg
-               -framerate 30/1
-               -pattern_type glob -i '%s'
-               -c:v libx264
-               -r 15
-               -pix_fmt yuv420p
-               -y
-               %s""" % (full_path, output_video_path))
-    response = envoy.run(command)
