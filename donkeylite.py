@@ -50,7 +50,7 @@ class CreateCar(BaseCommand):
     @staticmethod
     def parse_args(args):
         parser = argparse.ArgumentParser(prog='createcar', usage='%(prog)s [options]')
-        parser.add_argument('--path', default=None, help='path where to create car folder')
+        parser.add_argument('--path', required=True, default=None, help='path where to create car folder')
 
         parsed_args = parser.parse_args(args)
         return parsed_args
@@ -123,7 +123,7 @@ class CalibrateCar(BaseCommand):
     @staticmethod
     def parse_args(args):
         parser = argparse.ArgumentParser(prog='calibrate', usage='%(prog)s [options]')
-        parser.add_argument('--channel', help='The channel youd like to calibrate [0-15]')
+        parser.add_argument('--channel', required=True, help='The channel youd like to calibrate [0-15]')
         parsed_args = parser.parse_args(args)
         return parsed_args
 
@@ -144,7 +144,7 @@ class RunTests(BaseCommand):
     @staticmethod
     def parse_args(args):
         parser = argparse.ArgumentParser(prog='runtests', usage='%(prog)s [options]')
-        parser.add_argument('--path', help='path to tests or path to file')
+        parser.add_argument('--path', required=True, help='path to tests or path to file')
         parsed_args = parser.parse_args(args)
         return parsed_args
 
