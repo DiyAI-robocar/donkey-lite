@@ -144,7 +144,7 @@ class RunTests(BaseCommand):
     @staticmethod
     def parse_args(args):
         parser = argparse.ArgumentParser(prog='runtests', usage='%(prog)s [options]')
-        parser.add_argument('--location', help='path to tests or path to file')
+        parser.add_argument('--path', help='path to tests or path to file')
         parsed_args = parser.parse_args(args)
         return parsed_args
 
@@ -153,7 +153,7 @@ class RunTests(BaseCommand):
         run all tests
         """
         args = self.parse_args(args)
-        pytest.main(['-x', args.location])
+        pytest.main(['-x', args.path])
 
 
 def execute_from_command_line():
