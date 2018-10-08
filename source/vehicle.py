@@ -9,9 +9,6 @@ Created on Sun Jun 25 10:44:24 2017
 import time
 from threading import Thread
 from .memory import Memory
-from .log import get_logger
-
-logger = get_logger(__name__)
 
 
 class Vehicle:
@@ -41,7 +38,6 @@ class Vehicle:
         """
 
         p = part
-        logger.info('Adding part {}.'.format(p.__class__.__name__))
         entry = dict()
         entry['part'] = p
         entry['inputs'] = inputs
@@ -82,7 +78,6 @@ class Vehicle:
                     entry.get('thread').start()
 
             # wait until the parts warm up.
-            logger.info('Starting vehicle...')
             time.sleep(1)
 
             loop_count = 0
@@ -115,7 +110,6 @@ class Vehicle:
             if entry.get('run_condition'):
                 run_condition = entry.get('run_condition')
                 run = self.mem.get([run_condition])[0]
-                # print('run_condition', entry['part'], entry.get('run_condition'), run)
 
             if run:
                 p = entry['part']
@@ -133,9 +127,8 @@ class Vehicle:
                     self.mem.put(entry['outputs'], outputs)
 
     def stop(self):
-        logger.info('Shutting down vehicle and its parts...')
         for entry in self.parts:
             try:
                 entry['part'].shutdown()
-            except Exception as e:
-                logger.debug(e)
+            except:
+                pass

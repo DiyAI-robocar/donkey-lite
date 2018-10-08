@@ -17,9 +17,6 @@ import pandas as pd
 from PIL import Image
 
 from source import util
-from ..log import get_logger
-
-logger = get_logger(__name__)
 
 
 class Tub(object):
@@ -41,7 +38,6 @@ class Tub(object):
     def __init__(self, path, inputs=None, types=None):
 
         self.path = os.path.expanduser(path)
-        logger.info('path_in_tub: {}'.format(self.path))
         self.meta_path = os.path.join(self.path, 'meta.json')
         self.df = None
 
@@ -49,20 +45,17 @@ class Tub(object):
 
         if exists:
             # load log and meta
-            logger.info('Tub exists: {}'.format(self.path))
             with open(self.meta_path, 'r') as f:
                 self.meta = json.load(f)
             self.current_ix = self.get_last_ix() + 1
 
         elif not exists and inputs:
-            logger.info('Tub does NOT exist. Creating new tub...')
             # create log and save meta
             os.makedirs(self.path)
             self.meta = {'inputs': inputs, 'types': types}
             with open(self.meta_path, 'w') as f:
                 json.dump(self.meta, f)
             self.current_ix = 0
-            logger.info('New tub created at: {}'.format(self.path))
         else:
             msg = "The tub path you provided doesn't exist and you didnt pass any meta info (inputs & types)" + \
                   "to create a new tub. Please check your tub path or provide meta info to create a new tub."
@@ -124,12 +117,7 @@ class Tub(object):
         try:
             with open(path, 'w') as fp:
                 json.dump(json_data, fp)
-        except TypeError:
-            logger.warn('troubles with record: {}'.format(json_data))
-        except FileNotFoundError:
-            raise
         except:
-            logger.error('Unexpected error: {}'.format(sys.exc_info()[0]))
             raise
 
     def get_num_records(self):
@@ -152,21 +140,14 @@ class Tub(object):
         Iterate over all records and make sure we can load them.
         Optionally remove records that cause a problem.
         """
-        logger.info('Checking tub: {}'.format(self.path))
-        logger.info('Found: {} records'.format(self.get_num_records()))
-        problems = False
         for ix in self.get_index(shuffled=False):
             try:
                 self.get_record(ix)
             except:
-                problems = True
                 if fix is False:
-                    logger.warning('problems with record {} : {}'.format(ix, self.path))
+                    pass
                 else:
-                    logger.warning('problems with record {}, removing: {}'.format(ix, self.path))
                     self.remove_record(ix)
-        if not problems:
-            logger.info('No problems found.')
 
     def remove_record(self, ix):
         """
@@ -221,10 +202,7 @@ class Tub(object):
                 json_data = json.load(fp)
         except UnicodeDecodeError:
             raise Exception('bad record: %d. You may want to run `python manage.py check --fix`' % ix)
-        except FileNotFoundError:
-            raise
         except:
-            logger.error('Unexpected error: {}'.format(sys.exc_info()[0]))
             raise
 
         record_dict = self.make_record_paths_absolute(json_data)
@@ -480,7 +458,6 @@ class TubReader(Tub):
 class TubGroup(Tub):
     def __init__(self, tub_paths_arg):
         tub_paths = util.files.expand_path_arg(tub_paths_arg)
-        logger.info('TubGroup:tubpaths: {}'.format(tub_paths))
         self.tubs = [Tub(path) for path in tub_paths]
         self.input_types = {}
 
@@ -489,9 +466,6 @@ class TubGroup(Tub):
             t.update_df()
             record_count += len(t.df)
             self.input_types.update(dict(zip(t.inputs, t.types)))
-
-        logger.info('joining the tubs {} records together. This could take {} minutes.'.format(record_count,
-                                                                                         int(record_count / 300000)))
 
         self.meta = {'inputs': list(self.input_types.keys()),
                      'types': list(self.input_types.values())}
