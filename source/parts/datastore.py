@@ -6,7 +6,6 @@ Created on Tue Jul  4 12:32:53 2017
 @author: wroscoe
 """
 import os
-import sys
 import time
 import json
 import random
@@ -57,7 +56,7 @@ class Tub(object):
                 json.dump(self.meta, f)
             self.current_ix = 0
         else:
-            msg = "The tub path you provided doesn't exist and you didnt pass any meta info (inputs & types)" + \
+            msg = "The tub path you provided doesn't exist and you didn't pass any meta info (inputs & types)" + \
                   "to create a new tub. Please check your tub path or provide meta info to create a new tub."
 
             raise AttributeError(msg)
@@ -134,20 +133,6 @@ class Tub(object):
             d[k] = v
 
         return d
-
-    def check(self, fix=False):
-        """
-        Iterate over all records and make sure we can load them.
-        Optionally remove records that cause a problem.
-        """
-        for ix in self.get_index(shuffled=False):
-            try:
-                self.get_record(ix)
-            except:
-                if fix is False:
-                    pass
-                else:
-                    self.remove_record(ix)
 
     def remove_record(self, ix):
         """
@@ -227,15 +212,9 @@ class Tub(object):
         return data
 
     def make_file_name(self, key, ext='.png'):
-        # name = '_'.join([str(self.current_ix).zfill(6), key, ext])
         name = '_'.join([str(self.current_ix), key, ext])  # don't fill zeros
-        name = name = name.replace('/', '-')
+        name = name.replace('/', '-')
         return name
-
-    def delete(self):
-        """ Delete the folder and files for this tub. """
-        import shutil
-        shutil.rmtree(self.path)
 
     def shutdown(self):
         """ Required by the Part interface """
@@ -316,10 +295,7 @@ class Tub(object):
                 batch_arrays[k] = arr
             yield batch_arrays
 
-    def get_train_gen(self, X_keys, Y_keys,
-                      batch_size=128,
-                      record_transform=None,
-                      df=None):
+    def get_train_gen(self, X_keys, Y_keys, batch_size=128, record_transform=None, df=None):
         """
         Returns a training/validation set.
 
@@ -388,39 +364,6 @@ class Tub(object):
                                      record_transform=val_record_transform, df=val_df)
 
         return train_gen, val_gen
-
-    def tar_records(self, file_path, start_ix=None, end_ix=None):
-        """
-        Create a tarfile of the records and metadata from a tub.
-
-        Compress using gzip.
-
-        Parameters
-        ----------
-        file_path : string
-            The destination path of the created tar archive
-        start_ix : int
-            Start index. Defaults to 0.
-        end_ix : int
-            End index. Defaults to last index.
-
-        Returns
-        -------
-        Path to the tar archive
-        """
-        if not start_ix:
-            start_ix = 0
-
-        if not end_ix:
-            end_ix = self.get_last_ix() + 1
-
-        with tarfile.open(name=file_path, mode='w:gz') as f:
-            for ix in range(start_ix, end_ix):
-                record_path = self.get_json_record_path(ix)
-                f.add(record_path)
-            f.add(self.meta_path)
-
-        return file_path
 
 
 class TubWriter(Tub):
