@@ -23,13 +23,13 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_DIR)))
 
 import source as dk
 
-#import parts
 from source.parts.camera import PiCamera
 from source.parts.transform import Lambda
 from source.parts.keras import KerasCategorical
 from source.parts.actuator import PCA9685, PWMSteering, PWMThrottle
 from source.parts.datastore import TubGroup, TubWriter
-from source.parts.controller import LocalWebController, JoystickController
+from source.parts.joystick import JoystickController
+from source.parts.web_controller.web import LocalWebController
 from source.parts.clock import Timestamp
 
 
@@ -102,8 +102,7 @@ def drive(cfg, model_path=None, use_joystick=False, use_chaos=False):
 
     drive_mode_part = Lambda(drive_mode)
     V.add(drive_mode_part,
-          inputs=['user/mode', 'user/angle', 'user/throttle',
-                  'pilot/angle', 'pilot/throttle'],
+          inputs=['user/mode', 'user/angle', 'user/throttle','pilot/angle', 'pilot/throttle'],
           outputs=['angle', 'throttle'])
 
     steering_controller = PCA9685(cfg.STEERING_CHANNEL)
@@ -196,8 +195,3 @@ if __name__ == '__main__':
         base_model_path = args['--base_model']
         cache = not args['--no_cache']
         train(cfg, tub, new_model_path, base_model_path)
-
-
-
-
-

@@ -1,11 +1,7 @@
-
-
 import array
 import time
 import struct
 
-
-from source.parts.web_controller.web import LocalWebController
 
 class Joystick():
     """
@@ -99,7 +95,6 @@ class Joystick():
             0x2c3 : 'dpad_down',
         }
 
-
     def init(self):
         from fcntl import ioctl
         """
@@ -144,14 +139,12 @@ class Joystick():
 
         return True
 
-
     def show_map(self):
         """
         list the buttons and axis found on this joystick
         """
         print ('%d axes found: %s' % (self.num_axes, ', '.join(self.axis_map)))
         print ('%d buttons found: %s' % (self.num_buttons, ', '.join(self.button_map)))
-
 
     def poll(self):
         """
@@ -243,7 +236,6 @@ class JoystickController(object):
             print(self.dev_fn, "not found.")
             self.js = None
         return self.js is not None
-
 
     def update(self):
         """
