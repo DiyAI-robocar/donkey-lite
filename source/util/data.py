@@ -20,7 +20,7 @@ def linear_bin(a: float) -> list:
     return arr
 
 
-def linear_unbin(arr: list) -> list:
+def linear_unbin(arr: list) -> int:
     """
     Convert a categorical array to value.
 
@@ -31,7 +31,7 @@ def linear_unbin(arr: list) -> list:
         raise ValueError('Illegal array length, must be 15')
     b = np.argmax(arr)
     a = b * (2 / 14) - 1
-    return list(a)
+    return a
 
 
 def bin_Y(Y: list) -> []:
