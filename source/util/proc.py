@@ -7,40 +7,54 @@ import signal
 import sys
 
 
-def run_shell_command(cmd, cwd=None, timeout=15, print_out=False):
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
+def run_shell_command(cmd: str, cwd: object=None, timeout: int=15, print_out: bool=False) -> tuple:
+    """
+
+    :param cmd: Command string
+    :param cwd: Command working directory
+    :param timeout: Value of the timeout in seconds
+    :param print_out: Value if the print out should be or not
+    :return: Tuple of output, error and process id
+    """
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
     out = []
     err = []
 
     if(print_out):
         while True:
-            line = proc.stdout.readline().decode('utf8')
+            line = process.stdout.readline().decode('utf8')
             if not line:
                 break
             print(line.replace('\n', ''))
             out.append(line)
 
     try:
-        proc.wait(timeout=timeout)
+        process.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
-        kill(proc.pid)
+        kill(process.pid)
 
-    for line in proc.stdout.readlines():
+    for line in process.stdout.readlines():
         out.append(line.decode())
 
-    for line in proc.stderr.readlines():
+    for line in process.stderr.readlines():
         err.append(line)
 
-    return out, err, proc.pid
+    return out, err, process.pid
 
 
-def kill(proc_id: int) -> None:
+def kill(process_id: int) -> None:
     """
-    :param proc_id: ID of the system process
+    :param process_id: ID of the system process
     :return: Void function
     """
-    os.kill(proc_id, signal.SIGINT)
+    os.kill(process_id, signal.SIGINT)
 
 
-def eprint(*args, **kwargs):
+def eprint(*args, **kwargs) -> None:
+    """
+    Pint the message
+    :param args: ToDo
+    :param kwargs: ToDo
+    :return: Void function
+    """
     print(*args, file=sys.stderr, **kwargs)

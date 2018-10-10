@@ -1,7 +1,11 @@
 import socket
 
 
-def get_ip_address():
+def get_ip_address() -> str:
+    """
+    Find the IP address of the car
+    :return: string with the IP address of the car
+    """
     try:
         ip = ([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1],
                                [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in
