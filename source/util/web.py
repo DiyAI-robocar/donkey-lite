@@ -12,5 +12,5 @@ def get_ip_address() -> str:
                                  [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
         return ip
     except OSError:
-        #occurs when cannot connect to '8.8.8.8'
-        return "127.0.0.1" #loopback
+        # occurs when cannot connect to '8.8.8.8'
+        return "127.0.0.1"

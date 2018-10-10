@@ -4,7 +4,7 @@ Scripts to drive a donkey 2 car and train a model for it.
 
 Usage:
     manage.py (drive) [--model=<model>] [--js] [--chaos]
-    manage.py (train) [--tub=<tub1,tub2,..tubn>]  (--model=<model>) [--base_model=<base_model>] [--no_cache]
+    manage.py (train) [--tub=<tub1,tub2,..tubn>]  (--model=<model>) [--base_model=<base_model>]
 
 Options:
     -h --help        Show this screen.
@@ -182,8 +182,4 @@ if __name__ == '__main__':
         drive(cfg, model_path = args['--model'], use_joystick=args['--js'], use_chaos=args['--chaos'])
 
     elif args['train']:
-        tub = args['--tub']
-        new_model_path = args['--model']
-        base_model_path = args['--base_model']
-        cache = not args['--no_cache']
-        train(cfg, tub, new_model_path, base_model_path)
+        train(cfg, tub_names=args['--tub'], new_model_path=args['--model'], base_model_path=args['--base_model'])

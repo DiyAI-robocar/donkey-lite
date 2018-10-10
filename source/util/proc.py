@@ -9,7 +9,7 @@ import sys
 
 def run_shell_command(cmd: str, cwd: object=None, timeout: int=15, print_out: bool=False) -> tuple:
     """
-
+    Execute the shell command
     :param cmd: Command string
     :param cwd: Command working directory
     :param timeout: Value of the timeout in seconds
@@ -44,6 +44,7 @@ def run_shell_command(cmd: str, cwd: object=None, timeout: int=15, print_out: bo
 
 def kill(process_id: int) -> None:
     """
+    Kill the process ID
     :param process_id: ID of the system process
     :return: Void function
     """
