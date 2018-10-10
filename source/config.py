@@ -14,7 +14,7 @@ class Config:
     def __init__(self):
         pass
 
-    def from_pyfile(self, filename, silent=False):
+    def from_pyfile(self, filename):
         """
         Read config class from a file.
         """

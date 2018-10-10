@@ -1,4 +1,4 @@
-""""
+"""
 
 keras.py
 
@@ -16,15 +16,24 @@ from source import util
 
 
 class KerasPilot:
+    """
+    :
+    """
 
-    def load(self, model_path):
+    def load(self, model_path: str) -> None:
+        """
+        :param model_path Path to the model that should be used for autonomous driving
+        :return None
+        """
         self.model = load_model(model_path)
 
-    def shutdown(self):
+    def shutdown(self) -> None:
+        """
+        :return None
+        """
         pass
 
-    def train(self, train_gen, val_gen,
-              saved_model_path, epochs=100, steps=100, train_split=0.8,
+    def train(self, train_gen: int, val_gen: int, saved_model_path: str, epochs=100, steps=100, train_split=0.8,
               verbose=1, min_delta=.0005, patience=5, use_early_stop=True):
         """
         train_gen: generator that yields an array of images an array of
@@ -32,17 +41,11 @@ class KerasPilot:
         """
 
         # checkpoint to save model after each epoch
-        save_best = ModelCheckpoint(saved_model_path,
-                                    monitor='val_loss',
-                                    verbose=verbose,
-                                    save_best_only=True,
+        save_best = ModelCheckpoint(saved_model_path, monitor='val_loss', verbose=verbose, save_best_only=True,
                                     mode='min')
 
         # stop training if the validation error stops improving.
-        early_stop = EarlyStopping(monitor='val_loss',
-                                   min_delta=min_delta,
-                                   patience=patience,
-                                   verbose=verbose,
+        early_stop = EarlyStopping(monitor='val_loss', min_delta=min_delta, patience=patience, verbose=verbose,
                                    mode='auto')
 
         callbacks_list = [save_best]
@@ -51,13 +54,8 @@ class KerasPilot:
             callbacks_list.append(early_stop)
 
         hist = self.model.fit_generator(
-            train_gen,
-            steps_per_epoch=steps,
-            epochs=epochs,
-            verbose=1,
-            validation_data=val_gen,
-            callbacks=callbacks_list,
-            validation_steps=steps * (1.0 - train_split) / train_split)
+            train_gen, steps_per_epoch=steps, epochs=epochs, verbose=1, validation_data=val_gen,
+            callbacks=callbacks_list, validation_steps=steps * (1.0 - train_split) / train_split)
         return hist
 
 
