@@ -75,22 +75,17 @@ def drive(cfg, model_path=None, use_joystick=False, use_chaos=False):
             return True
 
     pilot_condition_part = Lambda(pilot_condition)
-    V.add(pilot_condition_part, inputs=['user/mode'],
-                                outputs=['run_pilot'])
+    V.add(pilot_condition_part, inputs=['user/mode'], outputs=['run_pilot'])
 
     # Run the pilot if the mode is not user.
     kl = KerasCategorical()
     if model_path:
         kl.load(model_path)
 
-    V.add(kl, inputs=['cam/image_array'],
-              outputs=['pilot/angle', 'pilot/throttle'],
-              run_condition='run_pilot')
+    V.add(kl, inputs=['cam/image_array'], outputs=['pilot/angle', 'pilot/throttle'], run_condition='run_pilot')
 
     # Choose what inputs should change the car.
-    def drive_mode(mode,
-                   user_angle, user_throttle,
-                   pilot_angle, pilot_throttle):
+    def drive_mode(mode, user_angle, user_throttle, pilot_angle, pilot_throttle):
         if mode == 'user':
             return user_angle, user_throttle
 
@@ -105,13 +100,11 @@ def drive(cfg, model_path=None, use_joystick=False, use_chaos=False):
           inputs=['user/mode', 'user/angle', 'user/throttle','pilot/angle', 'pilot/throttle'],
           outputs=['angle', 'throttle'])
 
-    steering_controller = PCA9685(cfg.STEERING_CHANNEL)
-    steering = PWMSteering(controller=steering_controller,
+    steering = PWMSteering(controller=PCA9685(cfg.STEERING_CHANNEL),
                            left_pulse=cfg.STEERING_LEFT_PWM,
                            right_pulse=cfg.STEERING_RIGHT_PWM)
 
-    throttle_controller = PCA9685(cfg.THROTTLE_CHANNEL)
-    throttle = PWMThrottle(controller=throttle_controller,
+    throttle = PWMThrottle(controller=PCA9685(cfg.THROTTLE_CHANNEL),
                            max_pulse=cfg.THROTTLE_FORWARD_PWM,
                            zero_pulse=cfg.THROTTLE_STOPPED_PWM,
                            min_pulse=cfg.THROTTLE_REVERSE_PWM)
@@ -128,8 +121,7 @@ def drive(cfg, model_path=None, use_joystick=False, use_chaos=False):
     V.add(tub, inputs=inputs, run_condition='recording')
 
     # run the vehicle
-    V.start(rate_hz=cfg.DRIVE_LOOP_HZ,
-            max_loop_count=cfg.MAX_LOOPS)
+    V.start(rate_hz=cfg.DRIVE_LOOP_HZ, max_loop_count=cfg.MAX_LOOPS)
 
 
 def train(cfg, tub_names, new_model_path, base_model_path=None ):

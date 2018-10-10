@@ -9,7 +9,6 @@ import os
 import time
 import json
 import random
-import tarfile
 
 import numpy as np
 import pandas as pd
@@ -46,7 +45,7 @@ class Tub(object):
             # load log and meta
             with open(self.meta_path, 'r') as f:
                 self.meta = json.load(f)
-            self.current_ix = self.get_last_ix() + 1
+            self.current_ix = self.get_last_index() + 1
 
         elif not exists and inputs:
             # create log and save meta
@@ -63,7 +62,7 @@ class Tub(object):
 
         self.start_time = time.time()
 
-    def get_last_ix(self):
+    def get_last_index(self):
         index = self.get_index()
         if len(index) >= 1:
             return max(index)
@@ -82,7 +81,7 @@ class Tub(object):
         files = next(os.walk(self.path))[2]
         record_files = [f for f in files if f[:6] == 'record']
 
-        def get_file_ix(file_name):
+        def get_file_index(file_name):
             try:
                 name = file_name.split('.')[0]
                 num = int(name.split('_')[1])
@@ -90,7 +89,7 @@ class Tub(object):
                 num = 0
             return num
 
-        nums = [get_file_ix(f) for f in record_files]
+        nums = [get_file_index(f) for f in record_files]
 
         if shuffled:
             random.shuffle(nums)
@@ -316,10 +315,7 @@ class Tub(object):
         --------
         get_batch_gen
         """
-        batch_gen = self.get_batch_gen(X_keys + Y_keys,
-                                       batch_size=batch_size,
-                                       record_transform=record_transform,
-                                       df=df)
+        batch_gen = self.get_batch_gen(X_keys + Y_keys, batch_size=batch_size, record_transform=record_transform, df=df)
 
         while True:
             batch = next(batch_gen)
