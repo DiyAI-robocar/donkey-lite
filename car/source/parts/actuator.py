@@ -1,35 +1,47 @@
 """
-actuators.py
 Classes to control the motors and servos. These classes
 are wrapped in a mixer class before being used in the drive loop.
 """
 
 import time
-import source as dk
+from ..util import data
 
 
 class PCA9685:
     """
-    PWM motor controler using PCA9685 boards.
+    PWM motor controller using PCA9685 boards.
     This is used for most RC Cars
     """
-    def __init__(self, channel, frequency=60):
+    def __init__(self, channel: int, frequency: int=60):
+        """
+        Constructor
+        :param channel:
+        :param frequency:
+        """
         import Adafruit_PCA9685
         # Initialise the PCA9685 using the default address (0x40).
         self.pwm = Adafruit_PCA9685.PCA9685()
         self.pwm.set_pwm_freq(frequency)
         self.channel = channel
 
-    def set_pulse(self, pulse):
+    def set_pulse(self, pulse: int) -> None:
+        """
+        Sets a single PWM channel.
+        :param pulse:
+        """
         self.pwm.set_pwm(self.channel, 0, pulse)
 
-    def run(self, pulse):
+    def run(self, pulse: int) -> None:
+        """
+        ToDo
+        :param pulse: ToDo
+        """
         self.set_pulse(pulse)
 
 
 class PWMSteering:
     """
-    Wrapper over a PWM motor cotnroller to convert angles to PWM pulses.
+    Wrapper over a PWM motor controller to convert angles to PWM pulses.
     """
     LEFT_ANGLE = -1
     RIGHT_ANGLE = 1
@@ -39,25 +51,30 @@ class PWMSteering:
         left_pulse = 290
         right_pulse = 490
 
-    def __init__(self, controller=None,
-                 left_pulse=290, right_pulse=490):
-
+    def __init__(self, controller=None, left_pulse: int=290, right_pulse: int=490):
+        """
+        Constructor
+        :param controller:
+        :param left_pulse:
+        :param right_pulse:
+        """
         self.controller = controller
         self.left_pulse = left_pulse
         self.right_pulse = right_pulse
 
-    def run(self, angle):
-        # map absolute angle to angle that vehicle can implement.
-        pulse = dk.util.data.map_range(
-            angle,
-            self.LEFT_ANGLE, self.RIGHT_ANGLE,
-            self.left_pulse, self.right_pulse
-        )
-
+    def run(self, angle: int) -> None:
+        """
+        Map absolute angle to angle that vehicle can implement.
+        :param angle: ToDo
+        """
+        pulse = data.map_range(angle, self.LEFT_ANGLE, self.RIGHT_ANGLE, self.left_pulse, self.right_pulse)
         self.controller.set_pulse(pulse)
 
-    def shutdown(self):
-        self.run(0)  # set steering straight
+    def shutdown(self) -> None:
+        """
+        Set steering straight
+        """
+        self.run(0)
 
 
 class PWMThrottle:
@@ -68,12 +85,14 @@ class PWMThrottle:
     MIN_THROTTLE = -1
     MAX_THROTTLE = 1
 
-    def __init__(self,
-                 controller=None,
-                 max_pulse=300,
-                 min_pulse=490,
-                 zero_pulse=350):
-
+    def __init__(self, controller=None, max_pulse: int=300, min_pulse: int=490, zero_pulse: int=350):
+        """
+        Constructor
+        :param controller:
+        :param max_pulse:
+        :param min_pulse:
+        :param zero_pulse:
+        """
         self.controller = controller
         self.max_pulse = max_pulse
         self.min_pulse = min_pulse
@@ -83,20 +102,24 @@ class PWMThrottle:
         self.controller.set_pulse(self.zero_pulse)
         time.sleep(1)
 
-    def run(self, throttle):
+    def run(self, throttle: int) -> None:
+        """
+        ToDo
+        :param throttle: ToDo
+        :return: ToDo
+        """
         if throttle > 0:
-            pulse = dk.util.data.map_range(throttle,
-                                           0, self.MAX_THROTTLE,
-                                           self.zero_pulse, self.max_pulse)
+            pulse = data.map_range(throttle, 0, self.MAX_THROTTLE, self.zero_pulse, self.max_pulse)
         else:
-            pulse = dk.util.data.map_range(throttle,
-                                           self.MIN_THROTTLE, 0,
-                                           self.min_pulse, self.zero_pulse)
+            pulse = data.map_range(throttle, self.MIN_THROTTLE, 0, self.min_pulse, self.zero_pulse)
 
         self.controller.set_pulse(pulse)
 
-    def shutdown(self):
-        self.run(0)  # stop vehicle
+    def shutdown(self) -> None:
+        """
+        Stop vehicle
+        """
+        self.run(0)
 
 
 class Adafruit_DCMotor_Hat:
@@ -119,16 +142,16 @@ class Adafruit_DCMotor_Hat:
         self.speed = 0
         self.throttle = 0
 
-    def run(self, speed):
+    def run(self, speed: float) -> None:
         """
-        Update the speed of the motor where 1 is full forward and
-        -1 is full backwards.
+        Update the speed of the motor where 1 is full forward and -1 is full backwards.
+        :param speed: ToDo
         """
         if speed > 1 or speed < -1:
             raise ValueError("Speed must be between 1(forward) and -1(reverse)")
 
         self.speed = speed
-        self.throttle = int(dk.util.data.map_range(abs(speed), -1, 1, -255, 255))
+        self.throttle = int(data.map_range(abs(speed), -1, 1, -255, 255))
 
         if speed > 0:
             self.motor.run(self.FORWARD)
@@ -137,5 +160,8 @@ class Adafruit_DCMotor_Hat:
 
         self.motor.setSpeed(self.throttle)
 
-    def shutdown(self):
+    def shutdown(self) -> None:
+        """
+        ToDo
+        """
         self.mh.getMotor(self.motor_num).run(Adafruit_MotorHAT.RELEASE)

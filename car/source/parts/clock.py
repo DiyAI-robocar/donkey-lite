@@ -2,6 +2,19 @@ import datetime
 
 
 class Timestamp():
+    """
+    ToDo
+    """
+    def __init__(self):
+        """
+        ToDo
+        """
+        pass
 
-    def run(self,):
+    @staticmethod
+    def run() -> str:
+        """
+        ToDo
+        :return: ToDo
+        """
         return str(datetime.datetime.utcnow())

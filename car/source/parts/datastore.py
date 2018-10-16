@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-from source import util
+from ..util import files
 
 
 class Tub(object):
@@ -396,7 +396,7 @@ class TubReader(Tub):
 
 class TubGroup(Tub):
     def __init__(self, tub_paths_arg):
-        tub_paths = util.files.expand_path_arg(tub_paths_arg)
+        tub_paths = files.expand_path_arg(tub_paths_arg)
         self.tubs = [Tub(path) for path in tub_paths]
         self.input_types = {}
 

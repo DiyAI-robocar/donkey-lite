@@ -5,26 +5,28 @@ from PIL import Image
 import glob
 
 
-
 class BaseCamera:
     """
     ToDo
     """
     def __init__(self):
         """
-        ToDo
+        Constructor
         """
         pass
 
-    def run_threaded(self):
+    def run_threaded(self) -> object:
         """
         ToDo
-        :return:
+        :return: ToDo
         """
         return self.frame
 
 
 class PiCamera(BaseCamera):
+    """
+    ToDo
+    """
     def __init__(self, cfg: object):
         """
         Initialize the camera
@@ -63,7 +65,6 @@ class PiCamera(BaseCamera):
         Change the resolution of the camera
         :param width: ToDo
         :param depth: ToDo
-        :return: Void function
         """
         self.camera.resolution = (width, depth)
 
@@ -74,7 +75,6 @@ class PiCamera(BaseCamera):
         :param y1: ToDo
         :param x2: ToDo
         :param y2: ToDo
-        :return: Void function
         """
         self.camera.zoom = (x1, y1, x2, y2)
 
@@ -91,7 +91,6 @@ class PiCamera(BaseCamera):
     def update(self) -> None:
         """
         Keep looping infinitely until the thread is stopped
-        :return: Void function
         """
         for f in self.stream:
             # grab the frame from the stream and clear the stream in
@@ -106,10 +105,9 @@ class PiCamera(BaseCamera):
     def shutdown(self) -> None:
         """
         Indicate that the thread should be stopped
-        :return: Void function
         """
         self.on = False
-        print('stoping PiCamera')
+        print('Stopping PiCamera')
         time.sleep(.5)
         self.stream.close()
         self.rawCapture.close()

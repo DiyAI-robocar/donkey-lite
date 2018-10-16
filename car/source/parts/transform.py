@@ -9,28 +9,43 @@ class Lambda:
     """
     def __init__(self, f):
         """
-        Accepts the function to use.
+        Constructor
+        :param f: function to use
         """
         self.f = f
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs) -> object:
+        """
+        Execute the saved function
+        :param args: ToDo
+        :param kwargs: ToDo
+        :return: ToDo
+        """
         return self.f(*args, **kwargs)
 
-    def shutdown(self):
-        return
+    def shutdown(self) -> None:
+        """
+        ToDo
+        """
+        pass
 
 
 class PIDController:
-    """ Performs a PID computation and returns a control value.
-        This is based on the elapsed time (dt) and the current value
-        of the process variable
-        (i.e. the thing we're measuring and trying to change).
-        https://github.com/chrisspen/pid_controller/blob/master/pid_controller/pid.py
+    """
+    Performs a PID computation and returns a control value.
+    This is based on the elapsed time (dt) and the current value of the process variable
+    (i.e. the thing we're measuring and trying to change).
+    https://github.com/chrisspen/pid_controller/blob/master/pid_controller/pid.py
     """
 
-    def __init__(self, p=0, i=0, d=0, debug=False):
-
-        # initialize gains
+    def __init__(self, p: int=0, i: int=0, d: int=0, debug:bool=False):
+        """
+        Constructor, initialize gains
+        :param p: ToDo
+        :param i: ToDo
+        :param d: ToDo
+        :param debug: ToDo
+        """
         self.Kp = p
         self.Ki = i
         self.Kd = d
@@ -49,7 +64,13 @@ class PIDController:
         # debug flag (set to True for console output)
         self.debug = debug
 
-    def run(self, target_value, feedback):
+    def run(self, target_value: int, feedback: int) -> int:
+        """
+        ToDo
+        :param target_value: ToDo
+        :param feedback: ToDo
+        :return: ToDo
+        """
         curr_tm = time.time()
 
         self.target = target_value
