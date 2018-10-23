@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message Point {
+	float x = 1;
+	float y = 2;
+}
+
+message Zoom {
+	Point a = 1;
+	Point b = 2;
+}
+
+message CameraConfig {
+	int32 camera_resolution_high = 1;
+	int32 camera_resolution_width = 2;
+	int32 camera_framerate = 3;
+	Zoom zoom = 4;
+	float camera_colorbalance_lens = 5;
+	float camera_colorbalance_red = 6;
+	float camera_colorbalance_green = 7;
+	float camera_colorbalance_blue = 8;
+	int32 camera_colorbalance_u = 9;
+	int32 camera_colorbalance_v = 10;
+}
+
+message VehicleConfig {
+	int32 steering_channel = 1;
+	int32 steering_left_pwm = 2;
+	int32 steering_right_pwm = 3;
+	int32 throttle_channel = 4;
+	int32 throttle_forward_pwm = 5;
+	int32 throttle_stopped_pwm = 6;
+	int32 throttle_reverse_pwm = 7;
+}
+
+message Result {
+	
+}
+
+service DonkeyLite {
+    rpc UpdateCameraConfiguration(CameraConfig) returns(Result) {}
+    rpc UpdateVehicleConfiguration(VehicleConfig) returns(Result) {}
+}
